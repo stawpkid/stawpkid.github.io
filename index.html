@@ -13,17 +13,36 @@
             width: 100%;
             overflow: hidden;
         }
-        iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        #content {
             height: 100%;
-            border: none;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <iframe src="https://steep-forest-2970.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/games"></iframe>
+    <div id="content"></div>
+
+    <script>
+        const targetURL = 'https://steep-forest-2970.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/';
+        const contentDiv = document.getElementById('content');
+
+        async function fetchAndRender() {
+            try {
+                const response = await fetch(targetURL);
+                if (response.ok) {
+                    const html = await response.text();
+                    contentDiv.innerHTML = html;
+                } else {
+                    console.error('Failed to fetch content:', response.status);
+                    contentDiv.innerHTML = '<p>Failed to load content.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching content:', error);
+                contentDiv.innerHTML = '<p>Error loading content.</p>';
+            }
+        }
+
+        fetchAndRender();
+    </script>
 </body>
 </html>
