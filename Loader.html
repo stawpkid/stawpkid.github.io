@@ -145,57 +145,61 @@ window.history.pushState(makeid(888), 'Title', makeid(888));
     </div>
     
     <script>
-    async function openInAboutBlank() {
-      // Prevent opening if already on about:blank
-      if (window.location.href === 'about:blank') {
-        return; // Do nothing if already in about:blank
-      } else {
-        // Open a new window (about:blank)
-        const newWindow = window.open('about:blank', '_blank');
-        if (!newWindow) {
-          alert("Unable to open a new window. Please check your browser settings.");
-          return;
-        }
-  
-        try {
-          // Determine which URL to fetch based on the current query parameters
-          let urlToFetch = "https://stawpkid.github.io/";
-          if (window.location.search.includes('ref=tt')) {
-            urlToFetch += "?ref=tt";
-          }
-  
-          // Fetch the content from the appropriate URL
-          const response = await fetch(urlToFetch);
-          if (!response.ok) throw new Error("Failed to fetch content");
-  
-          const htmlContent = await response.text();
-  
-          // Write the fetched content into the new window
-          newWindow.document.open();
-          newWindow.document.write(htmlContent);
-          newWindow.document.close();
-  
-          // Optionally style the new window
-          const style = newWindow.document.createElement("style");
-          style.textContent = \`
-            body {
-              margin: 0;
-              background-color: #121212; /* Dark background */
-              color: #e0e0e0; /* Light text */
-            }
-          \`;
-          newWindow.document.head.appendChild(style);
-  
-          // Optionally close the opener window after a delay
-          setTimeout(() => {
-            window.close();
-          }, 5000);
-        } catch (error) {
-          newWindow.document.write("<p>Error loading content. Please try again later.</p>");
-          console.error("Error fetching content:", error);
-        }
-      }
+async function openInAboutBlank() {
+  const currentUrl = window.location.href;
+
+  // Avoid opening a new about:blank page if already in one
+  if (currentUrl === 'about:blank') {
+    console.warn("Already in about:blank, no new page will open.");
+    return;
+  }
+
+  // Open a new window or tab
+  const newWindow = window.open('about:blank', '_blank');
+  if (!newWindow) {
+    alert("Unable to open a new window. Please check your popup settings.");
+    return;
+  }
+
+  try {
+    // Fetch content from the URL
+    let urlToFetch = "https://stawpkid.github.io/";
+    if (currentUrl.includes('ref=tt')) {
+      urlToFetch += "?ref=tt";
     }
+
+    const response = await fetch(urlToFetch);
+    if (!response.ok) throw new Error("Failed to fetch content");
+
+    const htmlContent = await response.text();
+
+    // Write content into the new window
+    newWindow.document.open();
+    newWindow.document.write(htmlContent);
+    newWindow.document.close();
+
+    // Optional: Add styles to the new window
+    const style = newWindow.document.createElement("style");
+    style.textContent = `
+      body {
+        margin: 0;
+        background-color: #121212;
+        color: #e0e0e0;
+        font-family: Arial, sans-serif;
+      }
+    `;
+    newWindow.document.head.appendChild(style);
+
+    // Close the original window after a delay
+    setTimeout(() => {
+      window.close();
+    }, 5000);
+  } catch (error) {
+    console.error("Error loading content:", error);
+    newWindow.document.write("<p>Error loading content. Please try again later.</p>");
+  }
+}
+
   </script>
   
   
