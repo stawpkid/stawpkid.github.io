@@ -1,0 +1,863 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+  <script src="//djlosch.github.io/apollo/apollo.js?id=leaderboard&timeout=50&sampling=10&actionBlocked=leadboard-blocked&actionUnblocked=leaderboard-unblocked"></script>
+  <meta name="monetag" content="a49ab5b3e0ba0a183d1bd678940d9693">
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games - Super Hard Math</title>
+    <script>
+    document.addEventListener('keydown', function(event) {
+        // Check if the key pressed is the minus key '-'
+        if (event.key === '-') {
+            // Attempt to close the current browser window
+            window.location.replace("http://google.com");
+            
+          }
+    });
+    </script>
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        background-color: #121212; /* Dark background */
+        color: #e0e0e0; /* Light text */
+        font-family: Arial, sans-serif;
+      }
+      #header {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1f1f1f;
+        border-bottom: 1px solid #333;
+        z-index: 1;
+        padding: 10px;
+      }
+      #headerv2 {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1f1f1f;
+        border-bottom: 1px solid #333;
+        z-index: 1;
+        padding: 10px;
+      }
+      
+      #search-bar {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #1f1f1f;
+        padding: 10px;
+        border-bottom: 1px solid #333;
+      }
+      #search-input {
+        padding: 10px;
+        font-size: 16px;
+        width: 80%;
+        max-width: 600px;
+        border: 1px solid #444;
+        border-radius: 5px;
+        background-color: #333;
+        color: #e0e0e0;
+      }
+      #buttons {
+        flex: 0 0 auto;
+        display: flex;
+        flex-wrap: wrap; /* Wrap buttons to new rows */
+        justify-content: center;
+        align-items: center;
+        background: #1f1f1f;
+        padding: 10px;
+        border-bottom: 1px solid #333;
+      }
+      button {
+        margin: 5px;
+        padding: 10px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #333;
+        border: 1px solid #444;
+        color: #e0e0e0;
+        border-radius: 5px;
+        transition: background-color 0.3s, border-color 0.3s;
+        width: 180px;
+        text-align: center;
+      }
+      button:hover {
+        background-color: #444;
+        border-color: #555;
+      }
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    #content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+    
+
+    
+    #game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      overflow: auto;
+      width: 100vw;
+      height: 100vh;
+      box-sizing: border-box;
+    }
+    
+    
+      
+      .game-card {
+        background: #1f1f1f;
+        border: 1px solid #333;
+        border-radius: 10px;
+        padding: 10px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        cursor: pointer;
+      }
+      .game-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .game-thumbnail {
+        width: 100%;
+        height: 100%;
+        max-height: 150px;
+        max-width: 100%;
+        object-fit: contain; /* Ensures the image fits inside while maintaining aspect ratio */
+        object-position: center;
+        border-radius: 8px;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .overlay-image img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+      .game-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #e0e0e0;
+      }
+      img {
+        border: none;
+        display: block;
+        width: 100%; /* or specific dimensions */
+      }
+      #install-prompt {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      
+      .install-message {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 250px;
+      }
+      
+      button {
+        margin: 10px;
+        padding: 10px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      
+      button#decline-install {
+        background-color: #f44336;
+      }
+      
+    </style>
+  </head>
+  <link rel="manifest" href="/manifest.json">
+  <div id="install-prompt" style="display: none;">
+  <div class="install-message">
+    <p>Hey! Install the app for a better experience!</p>
+    <button id="accept-install" onclick="acceptInstall()">Accept</button>
+    <button id="decline-install" onclick="declineInstall()">Decline</button>
+  </div>
+</div>
+
+<script>
+// setTimeout(function() {
+//  document.getElementById('install-prompt').style.display = 'block';
+//}, 2000);
+
+</script>
+<script>
+let deferredPrompt;
+const installPrompt = document.getElementById('install-prompt');
+
+window.addEventListener('beforeinstallprompt', (event) => {
+  // Prevent the default prompt
+  event.preventDefault();
+  deferredPrompt = event;
+
+  // Show the custom install prompt
+  installPrompt.style.display = 'flex';
+});
+
+// Function to handle the "Accept" button click
+function acceptInstall() {
+  // Show the install prompt
+  deferredPrompt.prompt();
+
+  // Wait for the user to respond to the prompt
+  deferredPrompt.userChoice.then((choiceResult) => {
+    if (choiceResult.outcome === 'accepted') {
+      console.log('User accepted the A2HS prompt');
+    } else {
+      console.log('User dismissed the A2HS prompt');
+    }
+    // Hide the custom prompt and reset deferredPrompt
+    installPrompt.style.display = 'none';
+    deferredPrompt = null;
+  });
+}
+
+// Function to handle the "Decline" button click
+function declineInstall() {
+  // Hide the custom prompt and reset deferredPrompt
+  installPrompt.style.display = 'none';
+  deferredPrompt = null;
+}
+
+
+</script>
+
+  <body>
+  <meta name='admaven-placement' content=Bqdr9rjgE>
+    <div id="header">
+      <h1>Games - Made by Blitzedzz</h1>
+    </div>
+    <div id="headerv2">
+      <a href="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/FROM%20THE%20BEER%20TO%20THE%20KEYS%20TO%20THE%20CAR%20%20TO%20THE%20TREE.mp4" target="_blank">Thick of it was NOT cookin. Enjoy this instead</a>
+    </div>
+    <div id="search-bar">
+      <input type="text" id="search-input" placeholder="Search games...">
+    </div>
+
+    <div id="game-grid">
+      <div class="game-card" onclick="openeagler()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/minecraft_60.webp?alt=media&token=209b31c5-3571-4795-98bc-5e583284f045" alt="Minecraft 1.8.8">
+        <div class="game-title">Minecraft 1.8.8</div>
+      </div>
+      <div class="game-card" onclick="proxy()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/unnamed.png?alt=media&token=7f4bb74b-dddd-4cbe-a3c4-f1678d702360" alt="Proxy Site">
+        <div class="game-title">Proxy Site</div>
+      </div>
+      <div class="game-card" onclick="ProxyV2()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/Untitled-removebg-preview.png?alt=media&token=185aa0ee-7387-4b3e-b891-42da4b57f2a8" alt="Google translate proxy">
+        <div class="game-title">Google translate proxy</div>
+      </div>
+      <div class="game-card" onclick="ProxyV3()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/channels4_profile-removebg-preview.png?alt=media&token=9c4548a6-781f-4c7a-98d6-6918531300e0" alt="Szzy central v2">
+        <div class="game-title">Szzy central v2</div>
+      </div>
+      <div class="game-card" onclick="ProxyV4();">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/sigma.png?alt=media&token=8ff6a7cb-15bd-4247-9c0f-5d61a69c8d33" alt="Saturn proxy">
+        <div class="game-title">Saturn proxy</div>
+      </div>
+      <div class="game-card" data-iframe="slope" onclick="applyFullscreen('slope')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/slope-game-v1-f260x260.png?alt=media&token=78ec3b77-7fe8-4096-9c15-ea9743904bc7" alt="Slope">
+        <div class="game-title">Slope</div>
+      </div>
+      <div class="game-card" data-iframe="eggycar" onclick="applyFullscreen('eggycar')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/logo.png?alt=media&token=6c5bfede-ed66-4097-9edf-25a5bca9ac1a" alt="Eggy car">
+        <div class="game-title">Eggy car</div>
+      </div>
+      <div class="game-card" onclick="cookies()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/0_zBoGSIuU8p7WxNiI.png?alt=media&token=5fc5ed4a-2f1a-413e-aaf1-ba909634f537" alt="Cookie clicker">
+        <div class="game-title">Cookie clicker</div>
+      </div>
+      <div class="game-card" data-iframe="fnaf" onclick="applyFullscreen('fnaf')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/480px-Five_Nights_at_Freddy%2527s_2_icon.webp?alt=media&token=4fd29b08-94fb-4ca3-bed0-b1438006a484" alt="FNAF">
+        <div class="game-title">FNAF</div>
+      </div>
+      <div class="game-card" data-iframe="FNAF2" onclick="applyFullscreen('FNAF2')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/480px-Five_Nights_at_Freddy%2527s_2_icon%20(1).webp?alt=media&token=bbb6ed50-c3da-46b0-9223-9d10d328a70c" alt="FNAF 2">
+        <div class="game-title">FNAF 2</div>
+      </div>
+      <div class="game-card" data-iframe="FNAF3" onclick="applyFullscreen('FNAF3')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/FNaF3-MobileIcon.webp?alt=media&token=3a88c099-d926-4ff1-badd-411846f7e98f" alt="FNAF 3">
+        <div class="game-title">FNAF 3</div>
+      </div>
+      <div class="game-card" data-iframe="tinyfishing" onclick="applyFullscreen('tinyfishing')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/c8cb366d52fc2a67fb313c344efdbc9e.avif?alt=media&token=6baf9dc9-8e7b-4c85-9fec-4c5d81b61de6" alt="Tiny fishing">
+        <div class="game-title">Tiny fishing</div>
+      </div>
+      <div class="game-card" data-iframe="subway" onclick="applyFullscreen('subway')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/download.jfif?alt=media&token=daa3c0ed-8066-4e75-9c03-db2cb5fa8145" alt="Subway surfers">
+        <div class="game-title">Subway surfers</div>
+      </div>
+      <div class="game-card" data-iframe="impossible" onclick="applyFullscreen('impossible')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/poki-the-impossible-quiz-icon-unplated.png?alt=media&token=6382b32e-806f-4fe8-bf2a-42e89f289bcd" alt="The Impossible Quiz">
+        <div class="game-title">The impossible quiz</div>
+      </div>
+      <div class="game-card" data-iframe="impossible2" onclick="applyFullscreen('impossible2')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/674fcb03268972a3a154e67bab44b70a.avif?alt=media&token=fd493167-5223-4bed-b7ec-3532975f9712" alt="The Impossible Quiz 2">
+        <div class="game-title">The impossible quiz 2</div>
+      </div>
+      <div class="game-card" data-iframe="happywheels" onclick="applyFullscreen('happywheels')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/bdeea6562dcab80a1905969266b0de38.avif?alt=media&token=e40c0afa-cadb-4938-ad8a-8fc48f89891e" alt="Happy wheels">
+        <div class="game-title">Happy wheels</div>
+      </div>
+      <div class="game-card" data-iframe="snake" onclick="applyFullscreen('snake')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/google-snake-favicon.webp?alt=media&token=8c876f9d-312c-4f18-b841-cfec10ef8336" alt="Google Snake">
+        <div class="game-title">Google Snake</div>
+      </div>
+      <div class="game-card" data-iframe="snakemods" onclick="applyFullscreen('snakemods')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/sigma.webp?alt=media&token=125cdf5b-0fdc-44bc-9866-1f7a62428509" alt="Modded Google Snake">
+        <div class="game-title">Google Snake (MODS)</div>
+      </div>
+      <div class="game-card" data-iframe="dino" onclick="applyFullscreen('dino')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/unnamed%20(1).png?alt=media&token=362a1e75-16d5-4a78-aa23-8910aceb44f0" alt="Dino game">
+        <div class="game-title">Google dino</div>
+      </div>
+      <div class="game-card" data-iframe="GTAGBA" onclick="applyFullscreen('GTAGBA')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/Grand_Theft_Auto_Advance_logo.svg?alt=media&token=bf97242d-4281-454a-8638-079d68ff75a3" alt="GTA Advance (EMULATED)">
+        <div class="game-title">GTA Advance (EMULATED)</div>
+      </div>
+      <div class="game-card" data-iframe="SMB" onclick="applyFullscreen('SMB')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/download.gif?alt=media&token=9b121167-f0e0-4572-9cba-7085371fb8ee" alt="Super mario bros">
+        <div class="game-title">Super mario bros</div>
+      </div>
+      <div class="game-card" data-iframe="SMW" onclick="applyFullscreen('SMW')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/4b8c300c2d7f32b6716055663dd13c6f.jpg?alt=media&token=b91a499b-a1a3-4fe4-8409-262a3f3819b9" alt="Super mario world">
+        <div class="game-title">Super mario world</div>
+      </div>
+      <div class="game-card" data-iframe="pizzaria" onclick="applyFullscreen('pizzaria')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/377fd7d97c2b2f4fe25618ccffcc601b.avif?alt=media&token=78f2e292-c223-4174-bce0-aaba4149e95d" alt="Papa's pizzaria">
+        <div class="game-title">Papa's pizzaria</div>
+      </div>
+      <div class="game-card" data-iframe="awesometanks" onclick="applyFullscreen('awesometanks')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/awesome-tanks-game-icon.png?alt=media&token=eda562e4-8bd6-4c8b-bbaa-57269a6446d4" alt="Awesome tanks">
+        <div class="game-title">Awesome tanks</div>
+      </div>
+      <div class="game-card" data-iframe="learntofly" onclick="applyFullscreen('learntofly')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/unnamed%20(2).png?alt=media&token=5d7cbcfa-db06-482d-aef5-8f9a6d5c50b4" alt="Learn to fly">
+        <div class="game-title">Learn to fly</div>
+      </div>
+      <div class="game-card" data-iframe="boxingrandom" onclick="applyFullscreen('boxingrandom')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/download%20(1).jfif?alt=media&token=7b6fb63b-369c-4291-a85e-25ab953e67f3" alt="Boxing random">
+        <div class="game-title">Boxing random</div>
+      </div>
+      <div class="game-card" data-iframe="jetpackjoyride" onclick="applyFullscreen('jetpackjoyride')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/download%20(2).jfif?alt=media&token=973678fc-8d93-441b-8ad1-3834660b814e" alt="Jetpack joyride">
+        <div class="game-title">Jetpack joyride</div>
+      </div>
+      <div class="game-card" data-iframe="youtube" onclick="applyFullscreen('youtube')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/images%20(1).png?alt=media&token=73740bf2-236e-43ae-87da-e6d4e78e154d" alt="Youtube unblocker">
+        <div class="game-title">Youtube unblocker</div>
+      </div>
+      <div class="game-card" data-iframe="flappybird" onclick="applyFullscreen('flappybird')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/21ZzpgClpiL.png?alt=media&token=a2e7f5c6-0b4e-43de-9bd1-689a4ffa2bf0" alt="Flappy bird">
+        <div class="game-title">Flappy bird</div>
+      </div>
+      <div class="game-card" data-iframe="motox3m2" onclick="applyFullscreen('motox3m2')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/Moto-X3M-2.webp?alt=media&token=bc802183-98f0-4bdc-9661-62205dfa50da" alt="MOTO X3M 2">
+        <div class="game-title">MOTO X3M 2</div>
+      </div>
+      <div class="game-card" data-iframe="snowbattleio" onclick="applyFullscreen('snowbattleio')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/9288_5eb3ef18092bd.jpg?alt=media&token=c25c47d2-2105-4bb9-a7ef-aab1210b77b9" alt="Snow battle.io">
+        <div class="game-title">Snow battle.io</div>
+      </div>
+      <div class="game-card" data-iframe="stickmanhook" onclick="applyFullscreen('stickmanhook')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/99e090d154caf30f3625df7e456d5984.avif?alt=media&token=ea4e326c-4e27-4930-8092-82ce3909dbc0" alt="Stickman hook">
+        <div class="game-title">Stickman hook</div>
+      </div>
+      <div class="game-card" data-iframe="retroball" onclick="applyFullscreen('retroball')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/ee9ca3764ef4289a48a1ebf457ef605441ed1f35a0f2eb12707a70d609e53686.avif?alt=media&token=31718f95-6b2c-43ab-85c9-53951703fed6" alt="Retro bowl">
+        <div class="game-title">Retro bowl</div>
+      </div>
+      
+      <div class="game-card" onclick="retroballmodded()">
+      <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/RetroBowlmodded.png?alt=media&token=d8b7de18-bee5-4173-b3af-65f4c080edee" alt="Retro bowl (Modded)">
+      <div class="game-title">Retro bowl (Modded)</div>
+    </div>
+    <div class="game-card" data-iframe="retroballcollage" onclick="applyFullscreen('retroballcollage')">
+    <img class="game-thumbnail" src="https://img.tapimg.net/market/images/423d5d0b7e701c170a946db42a6d3b2d.png/appicon?t=1" alt="Retro bowl collage">
+    <div class="game-title">Retro bowl collage</div>
+  </div>
+  
+      <div class="game-card" data-iframe="escaperoad" onclick="applyFullscreen('escaperoad')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/escape-road.png?alt=media&token=d683d69c-5ba7-4e39-86ef-6dae80b57710" alt="Escape road">
+        <div class="game-title">Escape road</div>
+      </div>
+      <div class="game-card" data-iframe="blooketdestroyer" onclick="blooketdestroyer()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/BlooketNew1.webp?alt=media&token=33f9a9fd-9926-4a16-82a3-951bfed5047a" alt="Blooket destroyer">
+        <div class="game-title">Blooket destroyer</div>
+      </div>
+      <div class="game-card" data-iframe="kahootdestroyer" onclick="kahootdestroyer()">
+      <img class="game-thumbnail" src="https://m.media-amazon.com/images/I/41d3TNh83QL.png" alt="Kahoot destroyer">
+      <div class="game-title">Kahoot destroyer</div>
+    </div>
+    
+      <div class="game-card" data-iframe="drivemad" onclick="applyFullscreen('drivemad')">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/unnamed%20(3).png?alt=media&token=ca870165-ed2c-4f9f-9d99-2596597a4f21" alt="Drive mad">
+        <div class="game-title">Drive mad</div>
+      </div>
+      <div class="game-card" data-iframe="nowggunblocked" onclick="nowggunblocked()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/1_YM7t6RluDCb0XT62yy2aqQ.png?alt=media&token=7c9f6ea5-a7a6-4fc7-9ed6-54bcac0caae0" alt="Now.gg Unblocked">
+        <div class="game-title">Now.gg Unblocked</div>
+      </div>
+      <div class="game-card" data-iframe="snowrider" onclick="applyFullscreen('snowrider')">
+      <img class="game-thumbnail" src="https://snow-rider.io/cache/data/image/game/snow-rider-m180x180.webp" alt="Snow rider.io">
+      <div class="game-title">Snow rider.io</div>
+    </div>
+    <div class="game-card" data-iframe="gladihoppers" onclick="applyFullscreen('gladihoppers')">
+    <img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjWq5BwhTwKSQTW__xeqJTX5lIUfcwGAzFdA&s" alt="Gladihoppers">
+    <div class="game-title">Gladihoppers</div>
+  </div>
+  <div class="game-card" data-iframe="1v1lol" onclick="applyFullscreen('1v1lol')">
+  <img class="game-thumbnail" src="https://ericcartman421.neocities.org/projects/1v1lol/splash.png" alt="1v1.lol">
+  <div class="game-title">1v1.lol</div>
+</div>
+<div class="game-card" data-iframe="polytrack" onclick="applyFullscreen('polytrack')">
+<img class="game-thumbnail" src="https://thepizzaedition.github.io/images/games/polytrack-min.jpg" alt="Polytrack">
+<div class="game-title">Polytrack</div>
+</div>
+<div class="game-card" data-iframe="redalert1" onclick="applyFullscreen('redalert1')">
+<img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwU263-OKDsq7NDANBzOFo42kkolMHMjIHfw&s" alt="Red Alert 1">
+<div class="game-title">Red Alert 1</div>
+</div>
+<div class="game-card" data-iframe="GTA1" onclick="applyFullscreen('GTA1')">
+<img class="game-thumbnail" src="https://m.media-amazon.com/images/I/61Q7witp0xL._AC_UF1000,1000_QL80_.jpg" alt="Grand theft auto 1">
+<div class="game-title">Grand theft auto 1</div>
+</div>
+<div class="game-card" data-iframe="doom" onclick="applyFullscreen('doom')">
+<img class="game-thumbnail" src="https://cdn2.steamgriddb.com/icon_thumb/ee2689a415fc2b28bb05fb5e195ebf04.png" alt="DOOM 1">
+<div class="game-title">DOOM 1</div>
+</div>
+
+<div class="game-card" data-iframe="paperio2" onclick="applyFullscreen('paperio2')">
+<img class="game-thumbnail" src="https://www1.minijuegosgratis.com/v3/games/thumbnails/219241_7_sq.jpg" alt="Paper.io">
+<div class="game-title">Paper.io</div>
+</div>
+<div class="game-card" data-iframe="FNF1" onclick="applyFullscreen('FNF1')">
+<img class="game-thumbnail" src="https://ih1.redbubble.net/image.2228225012.4308/raf,360x360,075,t,fafafa:ca443f4786.jpg" alt="FNF">
+<div class="game-title">FNF</div>
+</div>
+<div class="game-card" data-iframe="RagdollHit" onclick="applyFullscreen('RagdollHit')">
+<img class="game-thumbnail" src="https://thepizzaedition.github.io/images/games/ragdollhit-min.jpg" alt="Ragdoll Hit">
+<div class="game-title">Ragdoll Hit</div>
+</div>
+<div class="game-card" data-iframe="RagdollArchers" onclick="applyFullscreen('RagdollArchers')">
+<img class="game-thumbnail" src="https://thepizzaedition.github.io/images/games/ragdollarchers-min.png" alt="Ragdoll Archers">
+<div class="game-title">Ragdoll Archers</div>
+</div>
+<div class="game-card" data-iframe="chess" onclick="applyFullscreen('chess')">
+<img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/download_1-bspline.jpg?alt=media&token=2a7178ac-b4b2-4164-bf35-45db94c4b582" alt="Chess">
+<div class="game-title">Chess</div>
+</div>
+<div class="game-card" data-iframe="gunblood" onclick="applyFullscreen('gunblood')">
+<img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXabfBqFTMJGfUeWt7o-3VAPJKsgN0uqd4sA&s" alt="Gunblood">
+<div class="game-title">Gunblood</div>
+</div>
+<div class="game-card" data-iframe="granny" onclick="applyFullscreen('granny')">
+<img class="game-thumbnail" src="https://thepizzaedition.github.io/images/games/granny-min.png" alt="Granny">
+<div class="game-title">Granny</div>
+</div>
+<div class="game-card" data-iframe="babyinyellow" onclick="applyFullscreen('babyinyellow')">
+<img class="game-thumbnail" src="https://img.utdstc.com/icon/d2f/56a/d2f56a939f9346be83d9ece0f7ca2db53a21008ab17a3c726e5118f63ee86535:200" alt="Baby in yellow">
+<div class="game-title">Baby in yellow</div>
+</div>
+<div class="game-card" data-iframe="baldibasics" onclick="applyFullscreen('baldibasics')">
+<img class="game-thumbnail" src="https://thepizzaedition.github.io/images/games/baldisbasics-min.png" alt="Baldi's basics">
+<div class="game-title">Baldi's basics</div>
+</div>
+
+<div class="game-card" onclick="lightspeedbypass()">
+<img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/images%20(1).jpg?alt=media&token=a1a9aab6-7370-439d-b6c0-8ca3c3f1049b" alt="Lightspeed bypass V2">
+<div class="game-title">Lightspeed bypass V2</div>
+</div>
+<div class="game-card" onclick="guardianbypass()">
+<img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/images.png?alt=media&token=fa80aefd-358a-40de-b1ab-d726a28fcced" alt="GoGuardian Bypass V2">
+<div class="game-title">GoGuardian Bypass V2</div>
+</div>
+<div class="game-card" onclick="vpn()">
+<img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXYx02rq3xymVcXqDddQ-cJD9Y4Z-JDMolVg&s" alt="VPN Bypass V2">
+<div class="game-title">VPN Bypass V2</div>
+</div>
+
+      <div class="game-card" data-iframe="supportme" onclick="supportme()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/Hand_heart_icon.png?alt=media&token=e7cc5d04-c5e5-4663-aa11-6eeef955c4ed" alt="Support me">
+        <div class="game-title">Support me (ADS)</div>
+      </div>
+      <div class="game-card" onclick="movie()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/favicon-1.v2%20(1).png?alt=media&token=ded98319-1d0b-4e6e-9cb1-2bdd15315593" alt="Movie web {FREE MOVIES}">
+        <div class="game-title">Movie web {FREE MOVIES}</div>
+      </div>
+      <div class="game-card" onclick="movie2()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/logo6654.png?alt=media&token=0fecff5a-7290-4dbc-832a-adf1b2e09262" alt="Vidsrc {FREE MOVIES}">
+        <div class="game-title">Vidsrc {FREE MOVIES}</div>
+      </div>
+      <div class="game-card" onclick="movie3()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/favicon%20(1)-3.v1.png?alt=media&token=f3e162e5-689e-4ff1-a958-e623a09b56c1" alt="Freek {FREE MOVIES}">
+        <div class="game-title">Freek {FREE MOVIES}</div>
+      </div>
+      <div class="game-card" onclick="movie4()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/favicon-128x128.png?alt=media&token=89934018-e535-40c9-b2eb-6dd552dcce1e" alt="Heartive {FREE MOVIES}">
+        <div class="game-title">Heartive {FREE MOVIES}</div>
+      </div>
+      <div class="game-card" onclick="request()">
+      <img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTVEufMZBgswWo9RxReypSzRpi2M5QzjRoqQ&s" alt="Request a game">
+      <div class="game-title">Request a game</div>
+    </div>
+  
+      <div class="game-card" onclick="chat()">
+        <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/6995660.png?alt=media&token=8b81251d-d076-476c-b9b9-069378aeef2e" alt="Chat">
+        <div class="game-title">Chat</div>
+      </div>
+    <div class="game-card" onclick="Mirrors()">
+      <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/mirror-icon-for-your-website-design-logo-app-ui-free-vector.jpg?alt=media&token=24af7911-6c7d-4fda-a51f-d8f0e0523494" alt="Mirrors">
+      <div class="game-title">Mirrors</div>
+    </div>
+
+    </div>
+    <div id="content">
+
+    <iframe id="proxy" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://fuzzy-happiness-4jj4497gx4j72x7r-8080.app.github.dev/"></iframe>
+    <iframe id="minecraft" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://untitledproxy.pages.dev/service/hvtrs8%2F-ecgnepcpadt%2Ccmm-ma%"></iframe>
+    <iframe id="slope" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://slope-game.github.io/rungame/slope/"></iframe>
+    <iframe id="subway" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://files.ufreegame.net/1024/Subway-Surfers-Zurich/"></iframe>
+    <iframe id="impossible" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/quiz.html"></iframe>
+    <iframe id="impossible2" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/quiz2.html"></iframe>
+    <iframe id="eggycar" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://EggyCarUnblocked.github.io"></iframe>
+    <iframe id="fnaf" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://dorukyum.github.io/FNAF-Web/"></iframe>
+    <iframe id="tinyfishing" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://tiny-fishing.github.io/games/tinyfishing.html"></iframe>
+    <iframe id="happywheels" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/hw/index.html"></iframe>
+    <iframe id="snake" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/googsnake/index.html"></iframe>
+    <iframe id="dino" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/googdino/index.html"></iframe>
+    <iframe id="GTAGBA" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/GBA-gh-pages/launcher.html#gta"></iframe>
+    <iframe id="FNAF2" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/FNAF/2/index.html"></iframe>
+    <iframe id="FNAF3" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/FNAF/3/index.html"></iframe>
+    <iframe id="SMB" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/miscgame/mariones.html"></iframe>
+    <iframe id="SMW" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/GBA-gh-pages/launcher.html#supermarioadvance2"></iframe>
+    <iframe id="pizzaria" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://cbgamesdev.github.io/chilibowlflash/papapizza.html"></iframe>
+    <iframe id="awesometanks" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://mountjustin.github.io/zawesometanks.html"></iframe>
+    <iframe id="learntofly" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/swfrufflerunner/?swf=https://sz-games.github.io/FlashGames/learntofly.swf"></iframe>
+    <iframe id="boxingrandom" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://spew45.github.io/simple-games-assets/src/boxing-random/"></iframe>
+    <iframe id="jetpackjoyride" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://class811.github.io/g7/jetpack-joyride"></iframe>
+    <iframe id="supermario64" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://let3r45jj02l930rzh903me09f3g9lhh5fz66play356hhjz30.com/sm64/"></iframe>
+    <iframe id="youtube" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/YTUnblocker/"></iframe>
+    <iframe id="flappybird" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://flappybird.gg/game"></iframe>
+    <iframe id="motox3m2" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://dnrweqffuwjtx.cloudfront.net/games/2024/gm/moto-x3m-winter/index.html"></iframe>
+    <iframe id="snowbattleio" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://classroom-6x.io/games/snowball-io/"></iframe>
+    <iframe id="stickmanhook" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://mexisofunny.github.io/stickhook/"></iframe>
+    <iframe id="retroball" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://loserboysonyt.github.io/"></iframe>
+    <iframe id="retroballcollage" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://ethonion10.neocities.org/"></iframe>
+    <iframe id="escaperoad" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://azgames.io/game/escape-road/"></iframe>
+    <iframe id="snakemods" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://googlesnakemods.com/v/current/index.html"></iframe>
+    <iframe id="drivemad" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://drivemad.me/iframe/index.html"></iframe>
+    <iframe id="ratiorumble" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://mathsnacks.com/ratiorumble/index.html"></iframe>
+    <iframe id="snowrider" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://itsvijaysingh.github.io/Snow-Rider3D/"></iframe>
+    <iframe id="gladihoppers" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/gladihoppers/"></iframe>
+    <iframe id="1v1lol" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/1v1.lol-main/1v1.lol/index.html"></iframe>
+    <iframe id="polytrack" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/polytrack41/index.html"></iframe>
+    <iframe id="redalert1" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/js-dos-runner/?gamelink=https://br.cdn.dos.zone/ipx/redalert/redalert_ipx.jsdos"></iframe>
+    <iframe id="GTA1" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/js-dos-runner/?gamelink=https://cdn.dos.zone/custom/dos/gta-mobile.jsdos"></iframe>
+    <iframe id="FNF1" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://fnf.kdata1.com/2024/fnf/5201/"></iframe>
+    <iframe id="paperio2" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://paperio-2.github.io/a9/paper-io-2"></iframe>
+    <iframe id="doom" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/js-dos-runner/?gamelink=https://cdn.dos.zone/custom/dos/doom.jsdos"></iframe>
+    <iframe id="RagdollHit" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/ragdollhit/"></iframe>
+    <iframe id="RagdollArchers" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/RagdollArchers/"></iframe>
+    <iframe id="chess" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://stawpkid.github.io/embedded_chess/chess"></iframe>
+    <iframe id="gunblood" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/Gunblood/"></iframe>
+    <iframe id="babyinyellow" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://superkidgames.com/games/thebabyinyellow/"></iframe>
+    <iframe id="granny" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/granny/"></iframe>
+    <iframe id="baldibasics" src="https://blitzedzz-2.github.io/SUPERHARDMATHLOADER/?url=https://thepizzaedition.github.io/assets/allgames/baldis-basics/index.html"></iframe>
+    </div>
+    <div class="overlay-image">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYG3cKbQqaquVuApePZV-HM5mnNejZDEYEcg&s" alt="Chill Guy">
+    </div>
+    <script>
+    function applyFullscreen(iframeId) {
+      // Hide all iframes
+      const iframes = document.querySelectorAll('iframe');
+      iframes.forEach(iframe => iframe.style.display = 'none');
+  
+      // Select the target iframe by ID
+      const selectedIframe = document.getElementById(iframeId);
+      if (selectedIframe) {
+        // Show the iframe and make it fullscreen
+        selectedIframe.style.display = 'block';
+        selectedIframe.requestFullscreen().catch(err => console.error("Error attempting to enable full-screen mode:", err));
+      }
+    }
+    function supportme() {
+      const script = document.createElement('script');
+      script.src = "https://alwingulla.com/88/tag.min.js";
+      script.async = true;
+      script.setAttribute("data-zone", "111282");
+      script.setAttribute("data-cfasync", "false");
+      document.head.appendChild(script);      
+      var scriptv2 = document.createElement('script');
+      scriptv2.setAttribute('data-cfasync', 'false');
+      scriptv2.src = '//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1114264';
+      document.head.appendChild(scriptv2);
+      var scriptv3 = document.createElement('script');
+      scriptv3.setAttribute('data-cfasync', 'false');
+      scriptv3.src = '//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1114267';
+      document.head.appendChild(scriptv3);
+      var scriptv4 = document.createElement('script');
+      scriptv4.async = true;
+      scriptv4.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5833553467542153";
+      scriptv4.crossOrigin = "anonymous";
+      document.head.appendChild(scriptv4);
+      var script1 = document.createElement('script');
+      script1.setAttribute('data-cfasync', 'false');
+      script1.src = "//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1114680";
+      document.head.appendChild(script1);
+      fetch('https://raw.githubusercontent.com/stawpkid/Simple-Adblock-Detector/refs/heads/main/simpleblocker.js')
+      .then(res => res.text())
+      .then(eval)
+      .catch(console.error);
+    }
+    
+    function openeagler() {
+      window.open("https://blitzedzz-2.github.io/MinecraftWeb/", "_blank")
+    }
+    function nowggunblocked() {
+      window.open("https://websitesball.com/", "_blank")
+    }
+    function lightspeedbypass() {
+      window.open("https://github.com/stawpkid/LightspeedbypassV2/raw/refs/heads/main/LightspeedBypassV2ByBlitzedzz.zip", "_blank")
+    }
+    function guardianbypass() {
+      window.open("https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/GoGuardianBypassV2ByBlitzedzz.zip?alt=media&token=50dd5d7f-c29b-4586-8440-fb730ef88b84", "_blank")
+    }
+    function vpn() {
+      window.open("https://apps.microsoft.com/detail/9pkl3h9lwmb7?hl=en-US&gl=US", "_blank")
+    }
+    
+    function bookmark() {
+      alert('BOOKMARK THE LOADER NOT THIS PAGE')
+    }
+    function request() {
+      window.open("https://forms.gle/45RvD3G7hkRuDqqE7", "_blank")
+    }
+
+    function blooketdestroyer() {
+      window.open("https://stawpkid.github.io/BlooketDestroyer/", "_blank")
+    }
+    function kahootdestroyer() {
+      window.open("https://thatfrueddued.github.io/kahoot-smasher/", "_blank")
+    }
+    
+    function movie3() {
+      window.open("https://freek.to/", "_blank")
+    }
+    function retroballmodded() {
+      window.open("https://appetize.io/embed/b_5lyul2if4tjeug37cb6woqslha?device=galaxytabs7&osVersion=11.0&autoplay=true&orientation=landscape&scale=125%", "_blank")
+    }
+    
+    function proxy() {
+      window.open("https://fuzzy-happiness-4jj4497gx4j72x7r-8080.app.github.dev/", "_blank")
+    }
+    function ProxyV2() {
+      window.open("https://blitzedzz-2.github.io/GoogleTranslateProxy-2/", "_blank")
+    }
+    function ProxyV3() {
+      window.open("https://play.szvy.win/", "_blank")
+    }
+    // Function to generate the iframe and container dynamically
+    function ProxyV4() {
+      // Create the menu box
+      const menuBox = document.createElement('div');
+      menuBox.id = 'menuBox';
+      menuBox.style.position = 'fixed';
+      menuBox.style.top = '50%';
+      menuBox.style.left = '50%';
+      menuBox.style.transform = 'translate(-50%, -50%)';
+      menuBox.style.width = '500px';
+      menuBox.style.height = '400px';
+      menuBox.style.border = '2px solid black';
+      menuBox.style.backgroundColor = '#fff';
+      menuBox.style.zIndex = '9999';
+      menuBox.style.display = 'flex';
+      menuBox.style.flexDirection = 'column';
+      
+      // Create the exit button
+      const exitButton = document.createElement('button');
+      exitButton.id = 'exitButton';
+      exitButton.textContent = 'Exit';
+      exitButton.style.position = 'absolute';
+      exitButton.style.top = '5px';
+      exitButton.style.right = '5px';  // Changed to right to place it on the other side
+      exitButton.style.padding = '3px 10px';  // Smaller padding to make the button smaller
+      exitButton.style.backgroundColor = 'red';
+      exitButton.style.color = 'white';
+      exitButton.style.border = 'none';
+      exitButton.style.cursor = 'pointer';
+      exitButton.style.zIndex = '1';
+      exitButton.onclick = function() {
+          menuBox.style.display = 'none';
+      };
+      
+      
+      // Append the exit button to the menu box
+      menuBox.appendChild(exitButton);
+      
+      // Create the iframe
+      const iframe = document.createElement('iframe');
+      iframe.src = 'https://steep-forest-2970.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/saturnproxy';
+      iframe.title = 'Menu Iframe';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = 'none';
+      iframe.style.display = 'block';
+      
+      // Append the iframe to the menu box
+      menuBox.appendChild(iframe);
+      
+      // Append the menu box to the body
+      document.body.appendChild(menuBox);
+      
+    }
+        
+    
+    function roblox() {
+      window.open("https://newalgebra.com", "_blank")
+    }
+    function Mirrors() {
+      window.open("https://kindahardmath.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/", "_blank")
+    }
+    function cookies() {
+      window.open("https://stawpkid.github.io/Cookie-Clicker-Source-Code/", "_blank")
+    }
+    function chat() {
+      window.open("https://chat-fhiu21yadjhfg318796y419ioy98y9y89687fgguy97t87764wre567890.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/", "_blank")
+    }
+    function movie() {
+        window.open('https://movies.levrx.lol/', '_blank');
+    }
+    function movie2() {
+      window.open('https://stawpkid.github.io/VidSrc-player/', '_blank');
+    }
+    function movie4() {
+      window.open('https://heartive.pages.dev/', '_blank');
+    }
+    function movie5() {
+      window.open('https://fetcher.blitzedzzontoppoihsblitzedzzontoppoihs.workers.dev/?url=https://rivestream.live/', '_blank');
+    }
+    //hiiii
+      // Function to handle search input and filter buttons
+        function handleSearch() {
+            const searchValue = document.getElementById('search-input').value.toLowerCase();
+            const buttons = document.querySelectorAll('.game-card');
+
+            buttons.forEach(function(button) {
+                if (button.textContent.toLowerCase().includes(searchValue)) {
+                    button.style.display = 'inline-block';
+                } else {
+                    button.style.display = 'none';
+                }
+            });
+
+            // If "Chill guy" is found and ref=tt is in the URL, overlay the image
+            if (searchValue.includes('chill guy') && window.location.search.includes('ref=tt')) {
+                overlayImage(true);
+                // Clear the search input after overlaying the image
+                document.getElementById('search-input').value = '';
+            }
+        }
+
+        // Overlay image functionality
+        function overlayImage(show) {
+            const overlayImageElement = document.querySelector('.overlay-image');
+            const overlayBackground = document.querySelector('.overlay-background');
+
+            if (show) {
+                overlayImageElement.style.display = 'flex';
+            } else {
+                overlayImageElement.style.display = 'none';
+            }
+        }
+
+        // Add event listener to search input for live typing search
+        document.getElementById('search-input').addEventListener('input', handleSearch);
+  
+      // Iframe loading logic based on button click
+      document.querySelectorAll('.game-button').forEach(button => {
+        button.addEventListener('click', function() {
+          const iframeId = this.getAttribute('data-iframe');
+          const iframes = document.querySelectorAll('iframe');
+  
+          iframes.forEach(iframe => {
+            iframe.style.display = 'none'; // Hide all iframes
+          });
+  
+          const iframe = document.getElementById(iframeId);
+          if (iframe) {
+            iframe.style.display = 'block'; // Show the selected iframe
+            iframe.requestFullscreen().catch(err => {
+              console.error("Error attempting to enable full-screen mode:", err);
+            });
+          }
+        });
+      });
+
+    </script>
+    <script>
+
+    <script>
+  </body>
+  </html>
+  
