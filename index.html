@@ -225,6 +225,8 @@
       }
       
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   </head>
   <link rel="manifest" href="/manifest.json">
   <div id="install-prompt" style="display: none;">
@@ -499,6 +501,10 @@ function declineInstall() {
 <img class="game-thumbnail" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlv9oFCMIjP-0_B_9GPSJIT2cU9C9ZzbIy0g&s" alt="Block blast">
 <div class="game-title">Block blast</div>
 </div>
+<div class="game-card" data-iframe="BasketRandom" oncllick="applyFullscreen('BasketRandom')">
+<img class="game-thumbnail" src="https://imgs.crazygames.com/basket-random_1x1/20240617090207/basket-random_1x1-cover?format=auto&quality=100&metadata=none&width=1200" alt="Block blast">
+<div class="game-title">Basket Random</div>
+</div>
 
 <div class="game-card" onclick="lightspeedbypass()">
 <img class="game-thumbnail" src="https://firebasestorage.googleapis.com/v0/b/testing-009123.appspot.com/o/images%20(1).jpg?alt=media&token=a1a9aab6-7370-439d-b6c0-8ca3c3f1049b" alt="Lightspeed bypass V2">
@@ -577,7 +583,7 @@ function declineInstall() {
     <iframe id="retroballcollage" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://ethonion10.neocities.org/"></iframe>
     <iframe id="escaperoad" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://azgames.io/game/escape-road/"></iframe>
     <iframe id="snakemods" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://googlesnakemods.com/v/current/index.html"></iframe>
-    <iframe id="drivemad" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://drivemad.me/iframe/index.html"></iframe>
+    <iframe id="drivemad" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://pizzaedition.one/assets/allgames/drive-mad/index.html"></iframe>
     <iframe id="ratiorumble" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://mathsnacks.com/ratiorumble/index.html"></iframe>
     <iframe id="snowrider" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://itsvijaysingh.github.io/Snow-Rider3D/"></iframe>
     <iframe id="gladihoppers" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://pizzaedition.one/assets/allgames/gladihoppers/"></iframe>
@@ -595,11 +601,32 @@ function declineInstall() {
     <iframe id="granny" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://pizzaedition.one/assets/allgames/granny/index.html"></iframe>
     <iframe id="baldibasics" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://pizzaedition.one/assets/allgames/baldis-basics/index.html"></iframe>
     <iframe id="blockblast" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://reunbozdo.github.io/"></iframe>
+    <iframe id="BasketRandom" src="https://vippergui2.blitzedzz.xyz/SUPERHARDMATHLOADER/?url=https://pizzaedition.one/assets/allgames/BasketRandom/"></iframe>
     </div>
     <div class="overlay-image">
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYG3cKbQqaquVuApePZV-HM5mnNejZDEYEcg&s" alt="Chill Guy">
     </div>
+
+
     <script>
+      let unsavedChanges = true; // just always warn
+
+      window.addEventListener('beforeunload', function (e) {
+          if (unsavedChanges) {
+              const msg = "Unsaved changes"; // browsers ignore custom text but still show popup
+              e.preventDefault();
+              e.returnValue = msg; // required for Chrome
+              return msg; // for old browsers
+          }
+      });
+      Toastify({
+        text: "Loaded anticlose!",
+        duration: 3000,        // How long it stays (ms)
+        gravity: "top",        // top or bottom
+        position: "right",     // left, center, or right
+        backgroundColor: "#333",
+        close: true,           // show close button
+      }).showToast();
     function applyFullscreen(iframeId) {
       // Hide all iframes
       const iframes = document.querySelectorAll('iframe');
