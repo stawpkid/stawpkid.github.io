@@ -123,10 +123,7 @@ _client.start();
       if (targetUrl) {
         overlay.classList.add('fade-out');
         setTimeout(() => {
-          overlay.style.display = 'none';
-          loader.style.display = 'none';
-          iframe.style.display = 'block';
-          iframe.src = targetUrl;
+          window.location.href = targetUrl;
         }, 400);
       } else {
         alert('No URL provided!');
